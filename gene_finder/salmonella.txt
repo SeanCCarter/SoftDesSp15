@@ -1,0 +1,11 @@
+I found three different proteins in my search. This documents what they are, and what they do (some credit for the explanation must go to WikiGenes):
+
+1. ATP synthase SpaL:
+   This protein is essential for entering epithelial cells. It is part of the 'protein esport apparatus.' In other words, it forms part of the spike that salmonella uses to penetrate an organism's cells, and inject the proteins that allow it to be absorbed into that cell.
+
+2. antigen presentation protein SpaN:
+   Antigen presentation proteins mark the origin of cells. 'Self' antigens are versions of these proteins that are used by the host organism to identify its own cells. This is likely an example of a 'non-self' antigen - one that the human body will recognize after dealing with this species of salmonella for the first time.
+
+3. type III secretion system protein SpaR:
+   This is another piece of that spike, much like the first protein. The Type III secretion system is what bacteria use to inject virulence factors directly into the cell at extreamly close range. In particular, the 'R' indicates that it is a structural protein that is part of the iner membrane of the injector.
+
