@@ -195,20 +195,15 @@ def coding_strand_to_AA(dna):
     return codons
 
 def gene_finder(dna):
-    """ Returns the amino acid sequences coded by all genes that have an ORF
-        larger than the specified threshold.
+    """ Returns the amino acid sequences that are likely coded by the specified dna
         
         dna: a DNA sequence
-        threshold: the minimum length of the ORF for it to be considered a valid
-                   gene.
-        returns: a list of all amino acid sequences whose ORFs meet the minimum
-                 length specified.
+        returns: a list of all amino acid sequences coded by the sequence dna.
     """
     #Given its randomness, there isn't a good way to test it within the doctest framework
     #The project will break if there are no open reading frames
     threshold = longest_ORF_noncoding(dna, 1500)
     return [ORF for ORF in find_all_ORFs_both_strands(dna) if len(ORF) >= threshold]
-
 
 if __name__ == "__main__":
     import doctest
