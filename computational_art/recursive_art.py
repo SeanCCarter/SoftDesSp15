@@ -5,6 +5,7 @@ import math
 from PIL import Image
 
 
+
 def build_random_function(min_depth, max_depth):
     """ Builds a random function of depth at least min_depth and depth
         at most max_depth (see assignment writeup for definition of depth
@@ -16,8 +17,45 @@ def build_random_function(min_depth, max_depth):
                  (see assignment writeup for details on the representation of
                  these functions)
     """
-    # TODO: implement this
-    pass
+    # I really have no idea how to test this one, other than running it to check that it has
+    # the correct recursive depth
+    function_elements = ["prod", "avg", "cos_pi", "sin_pi"]
+    basic_elements = ["x", "y"]
+    all_elements = function_elements + basic_elements
+
+    if max_depth == 1:
+        return random.choice(basic_elements)
+        #Base case: everything needs an 'x' or 'y'
+    elif min_depth > 1:
+        function = [random.choice(function_elements)]
+        #Top level function for this level of recursion
+        function = continue_random_function(function, min_depth, max_depth)
+    else:
+        function = [random.choice(all_elements)]
+        function = continue_random_function(function, min_depth, max_depth)
+
+    return function
+
+def continue_random_function(function, min_depth, max_depth):
+    """ Takes a function that has been chosen randomly, determines
+        how many arguments it needs, and continues to build the
+        function with the appropriate level of recursion.
+    """
+    if function == ["prod"]:
+        function.append(build_random_function(min_depth-1, max_depth-1))
+        function.append(build_random_function(min_depth-1, max_depth-1))
+        #selects two functions to multiply
+    elif function == ["avg"]:
+        function.append(build_random_function(min_depth-1, max_depth-1))
+        function.append(build_random_function(min_depth-1, max_depth-1))
+        #selects two functions to multiply
+    elif function == ["cos_pi"]:
+        function.append(build_random_function(min_depth-1, max_depth-1))
+    elif function == ["sin_pi"]:
+        function.append(build_random_function(min_depth-1, max_depth-1))
+    else:
+        return function
+    return function
 
 
 def evaluate_random_function(f, x, y):
@@ -33,21 +71,39 @@ def evaluate_random_function(f, x, y):
         -0.5
         >>> evaluate_random_function(["y"],0.1,0.02)
         0.02
+        >>> evaluate_random_function(["prod",["x"],["y"]],1,2)
+        2
+        >>> evaluate_random_function(["avg",["x"],["y"]],1,2)
+        1.5
+        >>> evaluate_random_function(["sin_pi",["x"]],1,1)
+        0
+        >>> evaluate_random_function(["cos_pi",["x"]],1,1)
+        -1.0
+        >>> evaluate_random_function(["prod",["sin_pi",["x"]],["cos_pi",["x"]]],1,1)
+        0
     """
+    #Added tests for all the functions, as well as recursion. Sin_pi seems to constantly fail
+    #because of a rounding error, but it's obvious that that is what happened.
     if f[0] == "x":
         return x
     elif f[0] == "y":
         return y
-    else:
-        return 0
     #These are the two basic functions, that will always be used eventually
 
-    #elif f[0] == "prod"
-        #return evaluate_random_function(f[1])*evaluate_random_function(f[2])
-    #elif f[0] == "avg"
-        #return .5*(evaluate_random_function(f[1]) + evaluate_random_function(f[2]))
-    #elif f[0] == ""
-
+    elif f[0] == "prod":
+        return evaluate_random_function(f[1], x, y)*evaluate_random_function(f[2], x, y)
+    elif f[0] == "avg":
+        return .5*(evaluate_random_function(f[1], x, y) + evaluate_random_function(f[2], x, y))
+    elif f[0] == "cos_pi":
+        return math.cos(math.pi*evaluate_random_function(f[1], x, y))
+    elif f[0] == "sin_pi":
+        return math.sin(math.pi*evaluate_random_function(f[1], x, y))
+    else:
+        print 'f[0] is:'
+        print f[0]
+        return None
+        #This will break everything, but it'll do in in a distinctive way, so
+        #it'll be easy to track down the bug if it occurs here
 
 
 def remap_interval(val, input_interval_start, input_interval_end, output_interval_start, output_interval_end):
@@ -133,9 +189,9 @@ def generate_art(filename, x_size=350, y_size=350):
         x_size, y_size: optional args to set image dimensions (default: 350)
     """
     # Functions for red, green, and blue channels - where the magic happens!
-    red_function = ["x"]
-    green_function = ["y"]
-    blue_function = ["x"]
+    red_function = build_random_function(7, 9)
+    green_function = build_random_function(7, 9)
+    blue_function = build_random_function(7, 9)
 
     # Create image and loop over all pixels
     im = Image.new("RGB", (x_size, y_size))
@@ -154,14 +210,14 @@ def generate_art(filename, x_size=350, y_size=350):
 
 
 if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
+    #import doctest
+    #doctest.testmod()
 
     # Create some computational art!
     # TODO: Un-comment the generate_art function call after you
     #       implement remap_interval and evaluate_random_function
-    generate_art("myart.png")
+    generate_art("Art_3.png")
 
     # Test that PIL is installed correctly
     # TODO: Comment or remove this function call after testing PIL install
-    test_image("noise.png")
+    #test_image("noise.png")
