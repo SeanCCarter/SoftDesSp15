@@ -1,6 +1,7 @@
 """ TODO: Put your header comment here """
 
 import random
+import math
 from PIL import Image
 
 
@@ -33,8 +34,20 @@ def evaluate_random_function(f, x, y):
         >>> evaluate_random_function(["y"],0.1,0.02)
         0.02
     """
-    # TODO: implement this
-    pass
+    if f[0] == "x":
+        return x
+    elif f[0] == "y":
+        return y
+    else:
+        return 0
+    #These are the two basic functions, that will always be used eventually
+
+    #elif f[0] == "prod"
+        #return evaluate_random_function(f[1])*evaluate_random_function(f[2])
+    #elif f[0] == "avg"
+        #return .5*(evaluate_random_function(f[1]) + evaluate_random_function(f[2]))
+    #elif f[0] == ""
+
 
 
 def remap_interval(val, input_interval_start, input_interval_end, output_interval_start, output_interval_end):
@@ -59,8 +72,16 @@ def remap_interval(val, input_interval_start, input_interval_end, output_interva
         1.0
         >>> remap_interval(5, 4, 6, 1, 2)
         1.5
+        >>> remap_interval(-1, -5, 5, 0, 10)
+        4.0
     """
-    # TODO: implement this
+    #Added a doctest to examine negative intervals.
+    scale_initial = input_interval_end-input_interval_start
+    scale_final = output_interval_end - output_interval_start
+    value_initial = val - input_interval_start
+    value = value_initial*scale_final/float(scale_initial) + output_interval_start
+    return value
+
     pass
 
 
@@ -139,7 +160,7 @@ if __name__ == '__main__':
     # Create some computational art!
     # TODO: Un-comment the generate_art function call after you
     #       implement remap_interval and evaluate_random_function
-    #generate_art("myart.png")
+    generate_art("myart.png")
 
     # Test that PIL is installed correctly
     # TODO: Comment or remove this function call after testing PIL install
