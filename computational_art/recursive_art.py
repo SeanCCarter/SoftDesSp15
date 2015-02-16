@@ -1,4 +1,5 @@
-""" TODO: Put your header comment here """
+""" This program uses randomly generated functions to create colorful artwork. The functions are
+    recursive combinations of multiplication, averaging, sin(pi*x), and cos(pi*x)"""
 
 import random
 import math
@@ -19,7 +20,7 @@ def build_random_function(min_depth, max_depth):
     """
     # I really have no idea how to test this one, other than running it to check that it has
     # the correct recursive depth
-    function_elements = ["prod", "avg", "cos_pi", "sin_pi"]
+    function_elements = ["prod", "avg", "cos_pi", "sin_pi", "cube", "stand"]
     basic_elements = ["x", "y"]
     all_elements = function_elements + basic_elements
 
@@ -41,17 +42,11 @@ def continue_random_function(function, min_depth, max_depth):
         how many arguments it needs, and continues to build the
         function with the appropriate level of recursion.
     """
-    if function == ["prod"]:
+    if function == ["prod"] or ["avg"]:
         function.append(build_random_function(min_depth-1, max_depth-1))
         function.append(build_random_function(min_depth-1, max_depth-1))
-        #selects two functions to multiply
-    elif function == ["avg"]:
-        function.append(build_random_function(min_depth-1, max_depth-1))
-        function.append(build_random_function(min_depth-1, max_depth-1))
-        #selects two functions to multiply
-    elif function == ["cos_pi"]:
-        function.append(build_random_function(min_depth-1, max_depth-1))
-    elif function == ["sin_pi"]:
+        #selects two functions to use
+    elif function == ["cos_pi"] or ["sin_pi"] or ["cube"] or ["stand"]:
         function.append(build_random_function(min_depth-1, max_depth-1))
     else:
         return function
@@ -98,6 +93,10 @@ def evaluate_random_function(f, x, y):
         return math.cos(math.pi*evaluate_random_function(f[1], x, y))
     elif f[0] == "sin_pi":
         return math.sin(math.pi*evaluate_random_function(f[1], x, y))
+    elif f[0] == "cube":
+        return evaluate_random_function(f[1], x, y)**3
+    elif f[0] == "stand":
+        return math.sin((3.0/2)*math.asin(evaluate_random_function(f[1], x, y)))
     else:
         print 'f[0] is:'
         print f[0]
@@ -216,7 +215,8 @@ if __name__ == '__main__':
     # Create some computational art!
     # TODO: Un-comment the generate_art function call after you
     #       implement remap_interval and evaluate_random_function
-    generate_art("Art_3.png")
+    for i in range(15):
+        generate_art("New_Art_%d.png" %i)
 
     # Test that PIL is installed correctly
     # TODO: Comment or remove this function call after testing PIL install
