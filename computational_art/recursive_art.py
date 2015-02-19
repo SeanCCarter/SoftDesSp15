@@ -6,7 +6,6 @@ import math
 from PIL import Image
 
 
-
 def build_random_function(min_depth, max_depth):
     """ Builds a random function of depth at least min_depth and depth
         at most max_depth (see assignment writeup for definition of depth
@@ -37,6 +36,7 @@ def build_random_function(min_depth, max_depth):
 
     return function
 
+
 def continue_random_function(function, min_depth, max_depth):
     """ Takes a function that has been chosen randomly, determines
         how many arguments it needs, and continues to build the
@@ -46,10 +46,8 @@ def continue_random_function(function, min_depth, max_depth):
         function.append(build_random_function(min_depth-1, max_depth-1))
         function.append(build_random_function(min_depth-1, max_depth-1))
         #selects two functions to use
-    elif function == ["cos_pi"] or ["sin_pi"] or ["cube"] or ["stand"]:
-        function.append(build_random_function(min_depth-1, max_depth-1))
     else:
-        return function
+        function.append(build_random_function(min_depth-1, max_depth-1))
     return function
 
 
@@ -98,8 +96,7 @@ def evaluate_random_function(f, x, y):
     elif f[0] == "stand":
         return math.sin((3.0/2)*math.asin(evaluate_random_function(f[1], x, y)))
     else:
-        print 'f[0] is:'
-        print f[0]
+        print 'f[0] is:\n', f[0]
         return None
         #This will break everything, but it'll do in in a distinctive way, so
         #it'll be easy to track down the bug if it occurs here
@@ -137,8 +134,6 @@ def remap_interval(val, input_interval_start, input_interval_end, output_interva
     value = value_initial*scale_final/float(scale_initial) + output_interval_start
     return value
 
-    pass
-
 
 def color_map(val):
     """ Maps input value between -1 and 1 to an integer 0-255, suitable for
@@ -156,7 +151,6 @@ def color_map(val):
         >>> color_map(0.5)
         191
     """
-    # NOTE: This relies on remap_interval, which you must provide
     color_code = remap_interval(val, -1, 1, 0, 255)
     return int(color_code)
 
@@ -216,7 +210,7 @@ if __name__ == '__main__':
     # TODO: Un-comment the generate_art function call after you
     #       implement remap_interval and evaluate_random_function
     for i in range(15):
-        generate_art("New_Art_%d.png" %i)
+        generate_art("New_Art_%d.png" % i)
 
     # Test that PIL is installed correctly
     # TODO: Comment or remove this function call after testing PIL install
