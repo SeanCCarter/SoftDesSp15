@@ -54,8 +54,8 @@ def create_text_files(urls):
 		print 'Finished processing: ' + filename
 		counter += 1
 
-	list_of_filenames = pickle.load('filenames.txt', w)
-	pickle.dump(filenames, list_of_filenames)
+	list_of_filenames = load('filenames.txt', w)
+	dump(filenames, list_of_filenames)
 
 
 def visible(html_text):
