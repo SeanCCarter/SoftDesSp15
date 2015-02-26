@@ -23,10 +23,10 @@ def strip_non_story(filename):
 	 	text = text[1:]
 
  	line = 1
-	while 'Read & Participate' not in text[line] and '~~~~~~~~~~~~~~~~~~'  not in text[line] and '~ ~ ~ ~ ~ ~ ~ ~ ~ ~' not in text[line]:
+	while 'Read & Participate' not in text[line] and '~~~~~~~~~~~~~~~~~~'  not in text[line] and '~ ~ ~ ~ ~ ~ ~' not in text[line] and 'Next Chapter' not in text[line] or line < 25:
 		line += 1
 
-	full_text = text[0:line+1]
+	full_text = text[0:line + 1]
 
 	for position, line in enumerate(full_text):
 		full_text[position] = fix_tilde(line)
@@ -40,7 +40,7 @@ if __name__ == '__main__':
 	data = open('!Filenames.txt', 'r+')
 	filenames = load(data)
 	#strip_non_story(filenames[0] + '.txt')
-	for name in filenames:
+	for name in filenames[]:
 		print name
 		strip_non_story(name + '.txt')
 

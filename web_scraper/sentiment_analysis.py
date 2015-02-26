@@ -33,9 +33,7 @@ if __name__ == '__main__':
 
 	sentiments = []
 	for name in filenames:
-		print name
-		sentiments.append(analize_chapter(name+'.txt', 30))
-		print sentiments[-1]
+		sentiments.append(analize_chapter(name+'.txt', 40))
 
-	data = open("Sentiments_2.txt", 'w')
+	data = open("Sentiments_5.txt", 'w')
 	dump(sentiments, data)
