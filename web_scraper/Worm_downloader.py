@@ -82,15 +82,15 @@ if __name__ == '__main__':
 	urls = get_links("https://parahumans.wordpress.com/table-of-contents/")
 	formats = ['https://parahumans.wordpress.com/category/stories', 'https://parahumans.wordpress.com/2012/', 'https://parahumans.wordpress.com/2013/']
 	urls = sort_urls(urls, formats)
-	filenames = []
-	for url in urls:
-		url = url.split("/")
-		filename = remove_non_Ascii(url[-2])
-		filenames.append(filename)
-	all_filenames = open('!Filenames.txt', 'w')
-	dump(filenames, all_filenames)
+	# filenames = []
+	# for url in urls:
+	# 	url = url.split("/")
+	# 	filename = remove_non_Ascii(url[-2])
+	# 	filenames.append(filename)
+	# all_filenames = open('!Filenames.txt', 'w')
+	# dump(filenames, all_filenames)
 
-	#create_text_files(urls)
+	create_text_files(urls)
 
 	#print_urls(urls)
 
