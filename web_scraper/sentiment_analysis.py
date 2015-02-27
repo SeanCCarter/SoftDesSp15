@@ -6,17 +6,20 @@ def  analize_chapter(filename, averager):
 		the average of the n most positive and n most negative
 		sentence.
 	"""
+	#Split the chapter into sentances, instead of lines
 	chapter = open(filename, 'r')
 	lines = chapter.readlines()
 	chapter.close()
 	text = " ".join(lines)
 	text = text.split(".")
 
+	#Creates a rating from -1 to +1 for how happy the sentance is
 	sentiments = []
+	for sentance in text:
+		sentiments.append(sentiment(sentance)[0])
 
-	for line in text:
-		sentiments.append(sentiment(line)[0])
-
+	#Picks out and averages the n most positive and n most negatives sentances,
+	#to get a feel for how emotionally charged a chapter was.
 	sentiments.sort()
 	if len(sentiments) >= 2*averager:
 		negative = sum(sentiments[0:averager])/averager
@@ -28,12 +31,12 @@ def  analize_chapter(filename, averager):
 
 if __name__ == '__main__':
 
-	data = open('!Filenames.txt', 'r+')
+	data = open('filenames.txt', 'r+')
 	filenames = load(data)
 
 	sentiments = []
 	for name in filenames:
-		sentiments.append(analize_chapter(name+'.txt', 40))
+		sentiments.append(analize_chapter('./text_files/'+name+'.txt', 30))
 
-	data = open("Sentiments_5.txt", 'w')
+	data = open("Sentiments.txt", 'w')
 	dump(sentiments, data)

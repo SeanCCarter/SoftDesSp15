@@ -48,22 +48,14 @@ def create_text_files(urls):
 		filename = remove_non_Ascii(url[-2])
 		filenames.append(filename)
 
-		text_file = open(filename + '.txt', 'w')
+		text_file = open('./text_files/'+filename + '.txt', 'w')
 		text_file.write(text)
 		text_file.close()
 		print 'Finished processing: ' + filename
 		counter += 1
 
-	list_of_filenames = load('filenames.txt', w)
+	list_of_filenames = open('filenames.txt', 'w')
 	dump(filenames, list_of_filenames)
-
-
-def visible(html_text):
-	if html_text.parent.name in ['style', 'script', '[document]', 'head', 'title']:
-		return False
-	elif re.match('<!--.*-->', str(html_text)):
-		return False
-	return True
 
 
 def remove_non_Ascii(text): 
@@ -82,18 +74,23 @@ if __name__ == '__main__':
 	urls = get_links("https://parahumans.wordpress.com/table-of-contents/")
 	formats = ['https://parahumans.wordpress.com/category/stories', 'https://parahumans.wordpress.com/2012/', 'https://parahumans.wordpress.com/2013/']
 	urls = sort_urls(urls, formats)
-	# filenames = []
-	# for url in urls:
-	# 	url = url.split("/")
-	# 	filename = remove_non_Ascii(url[-2])
-	# 	filenames.append(filename)
-	# all_filenames = open('!Filenames.txt', 'w')
-	# dump(filenames, all_filenames)
+	
 
 	create_text_files(urls)
 
 	#print_urls(urls)
 
+	#This bit is 'cause I messed up the code with pickle, and just wanted the filenames.
+	#The reason that the filenames aren't a simple interator is for human readability. I
+	#actually know what the filenames mean, and if I want to do something more complicated than
+	#this project, I can use the names to help classify the text by the actuall name of the chapter.
 
-#html = urllib.urlopen('http://www.nytimes.com/2009/12/21/us/21storm.html').read()
+	# filenames = []
+	# for url in urls:
+	# 	url = url.split("/")
+	# 	filename = remove_non_Ascii(url[-2])
+	# 	filenames.append(filename)
+	# all_filenames = open('filenames.txt', 'w')
+	# dump(filenames, all_filenames)
+
 

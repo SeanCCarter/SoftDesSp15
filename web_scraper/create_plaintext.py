@@ -15,18 +15,30 @@ def fix_tilde(text):
 
 
 def strip_non_story(filename):
+	''' All of the chapters come with extraneous junk, that my download function doesn't quite take care of
+		when stripping outu all text. Some of the chapters also have comments, which can interfere with
+		the sentiment analysis. This rather ugly looking function will still find all of the standard
+		formating things, and strip them out.
+	'''
 	chapter = open(filename, 'r+')
 	text = chapter.readlines()
 	chapter.close
 
-	while 'Category Archives:' not in text[0] and "Last Chapter~~~~~~~~~~~~" not in text[0] and 'Last Chapter~ ~ ~ ~ ~ ~' not in text[0]:
+	while 'Category Archives:' not in text[0] and "~~~~~~~~~~~~" not in text[0] and '~ ~ ~ ~ ~ ~ ~' not in text[0]:
 	 	text = text[1:]
 
+	#Bizzare nature of lines below is because chapter interlude-27b was four words long. I hate formatting.
+	#I ran out of time before I could find an elegant way of doing this.
  	line = 1
-	while 'Read & Participate' not in text[line] and '~~~~~~~~~~~~~~~~~~'  not in text[line] and '~ ~ ~ ~ ~ ~ ~' not in text[line] and 'Next Chapter' not in text[line] or line < 25:
-		line += 1
+ 	print filename
+ 	if filename != './text_files/interlude-27b.txt':
+		while 'Read & Participate' not in text[line] and '~~~~~~~~~~~~~~'  not in text[line] and '~ ~ ~ ~ ~ ~ ~' not in text[line] or line < 25:
+			line += 1
+	else:
+		while 'Read & Participate' not in text[line] and '~~~~~~~~~~~~~~'  not in text[line] and '~ ~ ~ ~ ~ ~ ~' not in text[line]:
+			line += 1
 
-	full_text = text[0:line + 1]
+	full_text = text[0:line+1]
 
 	for position, line in enumerate(full_text):
 		full_text[position] = fix_tilde(line)
@@ -37,10 +49,12 @@ def strip_non_story(filename):
 
 
 if __name__ == '__main__':
-	data = open('!Filenames.txt', 'r+')
+	data = open('filenames.txt', 'r+')
 	filenames = load(data)
-	#strip_non_story(filenames[0] + '.txt')
-	for name in filenames[]:
-		print name
-		strip_non_story(name + '.txt')
+	status = "{0} has been processed as file #{1}"
+	counter = 0
+	for name in filenames:
+		strip_non_story('./text_files/'+ name + '.txt')
+		print status.format(name, str(counter))
+		counter += 1
 
