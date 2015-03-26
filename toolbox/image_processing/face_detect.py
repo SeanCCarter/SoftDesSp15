@@ -16,7 +16,12 @@ def remap_interval(val, input_interval_start, input_interval_end, output_interva
 	value = value_initial*scale_final/float(scale_initial) + output_interval_start
 	return int(value)
 
+def face_negative(x, y, w, h, img):
+	img[y:y+h,x:x+w, :] = [255, 255, 255] - img[y:y+h,x:x+w, :]
+	cv2.rectangle(img,(x,y),(x+w,y+h),(0,0,254))
+
 def draw_face(x, y, w, h, img):
+	img[y:y+h,x:x+w,:] = cv2.dilate(img[y:y+h,x:x+w,:], kernel)
 	#Draw left eye white
 	xcenter = remap_interval(-.45, -1, 1, x, x+w)
 	ycenter = remap_interval(.45, 1, -1, y, y+h)
@@ -35,7 +40,7 @@ def draw_face(x, y, w, h, img):
 	radius = remap_interval(.15, 0, 1, 0, (w+h)/2)
 	cv2.circle(img, (xcenter, ycenter), radius, (255, 255, 255), -1)
 
-	#Draw left eye black
+	#Draw right eye black
 	xcenter = remap_interval(.5, -1, 1, x, x+w)
 	ycenter = remap_interval(.4, 1, -1, y, y+h)
 	radius = remap_interval(.05, 0, 1, 0, (w+h)/2)
@@ -48,20 +53,16 @@ def draw_face(x, y, w, h, img):
 	minor_axis = remap_interval(.35, 0, 1, 0, (w+h)/2)
 	cv2.ellipse(img, (xcenter, ycenter), (major_axis, minor_axis), 0, 0, 180, (0, 0, 0), -1)
 
+	#draw border
+	cv2.rectangle(img,(x,y),(x+w,y+h),(0,0,254))
+
 while(True):
 	# Capture frame-by-frame
 	ret, frame = webcam_video.read()
 	faces = face_cascade.detectMultiScale(frame, scaleFactor=1.2, minSize=(30,30))
 	for (x,y,w,h) in faces:
-		frame[y:y+h,x:x+w,:] = cv2.dilate(frame[y:y+h,x:x+w,:], kernel)
-		draw_face(x, y, w, h, frame)
-		#frame[y:y+h,x:x+w, :] = [255, 255, 255] - frame[y:y+h,x:x+w, :]
-		
-		cv2.rectangle(frame,(x,y),(x+w,y+h),(0,0,254))
-
-	#Todo: use this section to do edit the viedo stream
-	#gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
+		#draw_face(x, y, w, h, frame)
+		face_negative(x, y, w, h, frame)
 
 	# Display the resulting frame
 	cv2.imshow('frame', frame)

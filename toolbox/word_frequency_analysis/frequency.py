@@ -22,7 +22,7 @@ def get_word_list(file_name):
 	#Takes the full text, then splits it into words.
 	text = remove_non_Ascii(''.join(lines))
 	for char in string.punctuation:
-		text.strip(char)
+		text = text.replace(char, "")
 	text = text.lower()
 	text = text.split()
 	return text

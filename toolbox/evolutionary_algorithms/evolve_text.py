@@ -121,15 +121,33 @@ def mutate_text(message, prob_ins=0.05, prob_del=0.05, prob_sub=0.05):
     """
 
     if random.random() < prob_ins:
-        # TODO: Implement insertion-type mutation
-        pass
-
-    # TODO: Also implement deletion and substitution mutations
-    # HINT: Message objects inherit from list, so they also inherit
-    #       useful list methods
-    # HINT: You probably want to use the VALID_CHARS global variable
+        i = random.choice(range(len(message)+1))
+        message = Message(message[:i] + [random.choice(VALID_CHARS)] + message[i:])
+    if random.random() < prob_del:
+        del message[random.randint(0,len(message)-1)]
+    if random.random() < prob_sub:
+        message[random.randint(0,len(message)-1)] = random.choice(VALID_CHARS)
 
     return (message, )   # Length 1 tuple, required by DEAP
+
+def levenshtein_distance(s1, s2, already_calculated = {}):
+    """ Computes the Levenshtein distance between two input strings """
+    if len(s1) == 0:
+        return len(s2)
+    if len(s2) == 0:
+        return len(s1)
+
+    calculations = []
+    for pair in [(s1[1:], s2[1:]), (s1[1:], s2), (s1, s2[1:])]:
+        if pair in already_calculated:
+            calculations.append(already_calculated[pair])
+        else:
+            already_calculated[pair] = levenshtein_distance(pair[0], pair[1], already_calculated)
+            calculations.append(already_calculated[pair])
+
+    return min([int(s1[0] != s2[0]) + calculations[0], 
+                1+calculations[1],
+                1+calculations[2]])
 
 
 #-----------------------------------------------------------------------------
